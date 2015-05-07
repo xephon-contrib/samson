@@ -85,6 +85,11 @@ Samson::Application.routes.draw do
     resources :commands, except: [:show]
     resources :environments, except: [:show]
     resources :deploy_groups, except: [:show]
+    resources :environment_variable_groups do
+      collection do
+        get :options_for_scope_select
+      end
+    end
   end
 
   namespace :integrations do

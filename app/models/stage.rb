@@ -17,6 +17,7 @@ class Stage < ActiveRecord::Base
     through: :stage_commands, auto_include: false
 
   has_and_belongs_to_many :deploy_groups
+  has_and_belongs_to_many :environment_variable_groups
 
   default_scope { order(:order) }
 

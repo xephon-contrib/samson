@@ -1,0 +1,33 @@
+<h1>Environment Variable Groups</h1>
+
+<div class="row dashboard">
+  <% @env_var_groups.each do |env_var_group| %>
+    <div class="col-sm-4 project-tile">
+      <h2>
+        <%= link_to env_var_group.name, edit_admin_environment_variable_group_url(env_var_group) %>
+      </h2>
+      <table class="table" style="width: 100%">
+        <thead>
+        <tr>
+          <th>Key</th>
+          <th>Value</th>
+          <th>Scope</th>
+        </tr>
+        </thead>
+        <% env_var_group.environment_variables.each do |env_var| %>
+          <tr>
+            <td><%= env_var.key %></td>
+            <td><%= env_var.value %></td>
+            <td><%= env_var.scope %></td>
+          </tr>
+        <% end %>
+      </table>
+    </div>
+  <% end %>
+
+  <div class="admin-actions">
+    <div class="pull-right">
+      <%= link_to "New", new_admin_environment_variable_group_path, class: "btn btn-default" %>
+    </div>
+  </div>
+</div>

@@ -1,0 +1,62 @@
+<div ng-controller="editEnvVarGroupCtrl">
+  <!--<div id="envVarGroupAlertDiv" ng-show="showErrorMessage()" class="alert alert-danger alert-dismissible" role="alert">-->
+    <!--<button type="button" ng-click="clearError()" class="close" data-dismiss="alert" aria-label="Close"><span aria-hidden="true">&times;</span></button>-->
+      <!--{{errorMessage}}-->
+  <!--</div>-->
+
+  <h1><%= @env_var_group.new_record? ? 'New' : 'Edit' %> Environment Variable Group</h1>
+
+  <section>
+    <%= form_for [:admin, @env_var_group], html: { class: 'form-horizontal' } do |form| %>
+      <div class="form-group">
+        <%= form.label :name, 'Name', class: 'col-lg-2 control-label' %>
+        <div class="col-lg-4">
+          <%= form.text_field :name, class: 'form-control', 'ng-model': 'group.name', placeholder: 'enter group name' %>
+        </div>
+      </div>
+
+      <hr>
+
+      <div class="form-group">
+        <div class="form-group" ng-repeat="env in group.environment_variables">
+          <div class="col-lg-2 col-lg-offset-2">
+            <input type="text" class="form-control" placeholder="enter key name" value="{{env.key}}">
+          </div>
+          <div class="col-lg-4">
+            <input type="text" class="form-control" placeholder="enter key value" value="{{env.value}}">
+          </div>
+          <div class="col-lg-2">
+            <env-var-scope-select scope="{{env.scope}}"></env-var-scope-select>
+          </div>
+          <div class="col-sm-1">
+            <button type='button' ng-click="removeVar(env)" class="btn btn-default btn-xs"><span class="glyphicon glyphicon-minus" aria-hidden="true"></span></button>
+          </div>
+        </div>
+
+        <div class="form-group">
+          <div class="col-lg-2 col-lg-offset-2">
+            <input type="text" ng-model="envNewKey" class="form-control" placeholder="enter key name">
+          </div>
+          <div class="col-lg-4">
+            <input type="text" ng-model="envNewValue" class="form-control" placeholder="enter key value">
+          </div>
+          <div class="col-lg-2">
+            <env-var-scope-select ng-model="envNewScope"></env-var-scope-select>
+          </div>
+          <div class="col-sm-1">
+            <button type='button' ng-click="addVar()" class="btn btn-default btn-xs">
+              <span class="glyphicon glyphicon-plus" aria-hidden="true"></span></button>
+          </div>
+        </div>
+      </div>
+
+      <hr>
+
+      <div class="form-group">
+        <div class="col-lg-offset-2 col-lg-10">
+          <button class="btn btn-default" type='button' ng-click="saveGroup()">Save</button>
+        </div>
+      </div>
+    <% end %>
+  </section>
+</div>

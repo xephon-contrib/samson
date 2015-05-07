@@ -82,6 +82,29 @@ ActiveRecord::Schema.define(version: 20150520210103) do
   add_index "deploys", ["job_id", "deleted_at"], name: "index_deploys_on_job_id_and_deleted_at"
   add_index "deploys", ["stage_id", "deleted_at"], name: "index_deploys_on_stage_id_and_deleted_at"
 
+  create_table "environment_variable_groups", force: :cascade do |t|
+    t.string   "name",                           null: false
+    t.boolean  "stage_specific", default: false, null: false
+    t.datetime "created_at",                     null: false
+    t.datetime "updated_at",                     null: false
+  end
+
+  create_table "environment_variable_groups_stages", id: false, force: :cascade do |t|
+    t.integer "stage_id",                      null: false
+    t.integer "environment_variable_group_id", null: false
+  end
+
+  create_table "environment_variables", force: :cascade do |t|
+    t.string   "key",                                           null: false
+    t.string   "value",                                         null: false
+    t.string   "scope",                         default: "All", null: false
+    t.integer  "environment_variable_group_id",                 null: false
+    t.datetime "created_at",                                    null: false
+    t.datetime "updated_at",                                    null: false
+  end
+
+  add_index "environment_variables", ["environment_variable_group_id"], name: "index_environment_variables_on_environment_variable_group_id"
+
   create_table "environments", force: :cascade do |t|
     t.string   "name",                          null: false
     t.boolean  "is_production", default: false, null: false
@@ -94,9 +117,9 @@ ActiveRecord::Schema.define(version: 20150520210103) do
   add_index "environments", ["permalink"], name: "index_environments_on_permalink", unique: true
 
   create_table "flowdock_flows", force: :cascade do |t|
-    t.string   "name",       null: false
-    t.string   "token",      null: false
-    t.integer  "stage_id",   null: false
+    t.string   "name",                      null: false
+    t.string   "token",                     null: false
+    t.integer  "stage_id",                  null: false
     t.datetime "created_at"
     t.datetime "updated_at"
     t.boolean  "enabled",    default: true
@@ -113,8 +136,8 @@ ActiveRecord::Schema.define(version: 20150520210103) do
     t.string   "url",            limit: 255
   end
 
-  add_index "jenkins_jobs", ["deploy_id"], name: "index_jenkins_jobs_on_deploy_id", using: :btree
-  add_index "jenkins_jobs", ["jenkins_job_id"], name: "index_jenkins_jobs_on_jenkins_job_id", using: :btree
+  add_index "jenkins_jobs", ["deploy_id"], name: "index_jenkins_jobs_on_deploy_id"
+  add_index "jenkins_jobs", ["jenkins_job_id"], name: "index_jenkins_jobs_on_jenkins_job_id"
 
   create_table "jobs", force: :cascade do |t|
     t.text     "command",                                           null: false
@@ -269,9 +292,9 @@ ActiveRecord::Schema.define(version: 20150520210103) do
   add_index "users", ["external_id", "deleted_at"], name: "index_users_on_external_id_and_deleted_at"
 
   create_table "webhooks", force: :cascade do |t|
-    t.integer  "project_id", null: false
-    t.integer  "stage_id",   null: false
-    t.string   "branch",     null: false
+    t.integer  "project_id",             null: false
+    t.integer  "stage_id",               null: false
+    t.string   "branch",                 null: false
     t.datetime "created_at"
     t.datetime "updated_at"
     t.datetime "deleted_at"

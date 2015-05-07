@@ -1,0 +1,6 @@
+<select class="form-control">
+  <option ng-repeat="option in scope_options"
+          value="{{option.id}}"
+          ng-disabled="option.disabled"
+          ng-selected="option.id == env.selected">{{option.title}}</option>
+</select>
