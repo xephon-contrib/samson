@@ -1,10 +1,11 @@
 # frozen_string_literal: true
+# tested via test/integration/authentication_test.rb
 require 'warden'
 
 Warden::Manager.serialize_into_session(&:id)
 
 Warden::Manager.serialize_from_session do |id|
-  User.find(id)
+  User.where('last_login_at > ?', 1.month.ago).find_by_id(id)
 end
 
 require 'warden/strategies/basic_strategy'
