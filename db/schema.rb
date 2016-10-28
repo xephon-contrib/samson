@@ -10,7 +10,7 @@
 #
 # It's strongly recommended that you check this file into your version control system.
 
-ActiveRecord::Schema.define(version: 20161028173926) do
+ActiveRecord::Schema.define(version: 20161028211415) do
 
   create_table "builds", force: :cascade do |t|
     t.integer  "project_id",                                       null: false
@@ -490,6 +490,7 @@ ActiveRecord::Schema.define(version: 20161028173926) do
     t.boolean  "access_request_pending", default: false,      null: false
     t.string   "time_format",            default: "relative", null: false
     t.datetime "last_login_at"
+    t.datetime "last_seen_at"
     t.index ["external_id", "deleted_at"], name: "index_users_on_external_id_and_deleted_at", length: {"external_id"=>191, "deleted_at"=>nil}, using: :btree
   end
 
